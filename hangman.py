@@ -1,10 +1,10 @@
 from random import choice as c
 import turtle as tur
 import string as s
-import re as r
+from re import search as r
 
 with open('all words.txt', 'r') as f:
-    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word))]
+    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r('[' + s.punctuation + ']', word))]
 
 wrd = c(ws)
 #wrd = 'ENTER WORD HERE'
