@@ -15,6 +15,7 @@ l_rmvd = []
 w_rmvd = []
 l_gssd = []
 w_gssd = []
+#print(wrd)
 
 def frmt_rvld(rvld):
     return ''.join(['_ ' if ch == None else ch + ' ' for ch in rvld])
@@ -102,10 +103,10 @@ def main():
     #print(word)
     print('Let\'s play hangman! I\'ve thought about my word already.')
     print('Make sure \'Python Turtle Graphics\' is open.\n')
-    while prog < 8 or rvld.count(None) != 0:
-        print(f'\nLetters Removed: {frmt_rmvd(l_rmvd)}')
-        print(f'Words Removed: {frmt_rmvd(w_rmvd)}')
-        print(f'Places Revealed: {frmt_rvld(rvld)}\n')
+    while prog < 8 and rvld.count(None) != 0:
+        print(f'\nLetters removed: {frmt_rmvd(l_rmvd)}')
+        print(f'Words removed: {frmt_rmvd(w_rmvd)}')
+        print(f'Places revealed: {frmt_rvld(rvld)}\n')
         data = i_gss()
         data = up_rvld(data[0], data[1], wrd, rvld)
         rvld = data[0]
@@ -118,4 +119,3 @@ def main():
 
 
 main()
-
