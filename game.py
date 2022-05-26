@@ -95,6 +95,8 @@ def hang(prog, t):
 
 def main():
     trwn = tur.Screen()
+    tur.setup(500, 750)
+    tur.title('Hangman Drawing')
     t = tur.Turtle()
     t.speed(0)
     t.hideturtle()
