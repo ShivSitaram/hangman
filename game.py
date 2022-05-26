@@ -1,10 +1,10 @@
 from random import choice as c
 import turtle as tur
 import string as s
-import re as r
+from re import search as r
 
 with open('all words.txt', 'r') as f:
-    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word)) and len(word) >= 2]
+    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r('[' + s.punctuation + ']', word)) and len(word) >= 2]
 
 wrd = c(ws)
 #wrd = 'ENTER WORD HERE'
@@ -16,35 +16,27 @@ w_rmvd = []
 l_gssd = []
 w_gssd = []
 
-
 def frmt_rvld(rvld):
     return ''.join(['_ ' if ch == None else ch + ' ' for ch in rvld])
 
 def frmt_rmvd(rmvd):
     return str(rmvd)[1:-1]
 
-def i_act():
-    act = None
-    act_dict = {'l': 1, 'w': 0}
-    while act != 'l' and act != 'w':
-        act = input("Would you like to guess a letter or the word? {'l': guess letter, 'w': guess word} ").lower()
-    return act_dict[act]
-
-def i_gss(act):
+def i_gss():
     gss = '!!!'
     global l_gssd
     global w_gssd
-    if act == 1:
-        prmpt = 'Enter your letter guess: '
-        while gss not in s.ascii_lowercase or gss in l_gssd or gss == '':
-            gss = input(prmpt).lower()
+    act = None
+    while bool(r('[' + s.punctuation + ']', gss)) or gss == '':
+        gss = input('Enter your guess: (letter or word) ').lower()
+    l_gssd.append(gss)
+    if len(gss) == 1:
+        act = 1
         l_gssd.append(gss)
-    elif act == 0:
-        prmpt = 'Enter your word guess: '
-        while gss not in ws or gss in w_gssd or gss == '':
-            gss = input(prmpt).lower()
+    else:
+        act = 0
         w_gssd.append(gss)
-    return gss
+    return [gss, act]
 
 def up_rvld(gss, act, wrd, rvld):
     n_rvld = []
@@ -60,6 +52,7 @@ def up_rvld(gss, act, wrd, rvld):
         else:
             hang = True
             w_rmvd.append(gss)
+            n_rvld = rvld
     return [n_rvld, hang]
 
 def hang(prog, t):
@@ -109,12 +102,12 @@ def main():
     #print(word)
     print('Let\'s play hangman! I\'ve thought about my word already.')
     print('Make sure \'Python Turtle Graphics\' is open.\n')
-    while prog < 8 and rvld.count(None) != 0:
+    while prog < 8 or rvld.count(None) != 0:
         print(f'\nLetters removed: {frmt_rmvd(l_rmvd)}')
         print(f'Words removed: {frmt_rmvd(w_rmvd)}')
         print(f'Places revealed: {frmt_rvld(rvld)}\n')
-        act = i_act()
-        data = up_rvld(i_gss(act), act, wrd, rvld)
+        data = i_gss()
+        data = up_rvld(data[0], data[1], wrd, rvld)
         rvld = data[0]
         if data[1]:
             prog = hang(prog, t)
@@ -125,3 +118,4 @@ def main():
 
 
 main()
+
