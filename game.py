@@ -1,10 +1,10 @@
 from random import choice as c
 import turtle as tur
 import string as s
-from re import search as r
+import re as r
 
 with open('all words.txt', 'r') as f:
-    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r('[' + s.punctuation + ']', word))]
+    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word)) and len(word) >= 2]
 
 wrd = c(ws)
 #wrd = 'ENTER WORD HERE'
@@ -100,7 +100,7 @@ def hang(prog, t):
     return prog + 1
 
 def main():
-    wn = tur.Screen()
+    trwn = tur.Screen()
     t = tur.Turtle()
     t.speed(0)
     t.hideturtle()
