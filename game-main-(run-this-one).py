@@ -160,8 +160,7 @@ gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman'
 gss_ent = tk.Entry(root, textvariable=wrd_gss, font=('Times New Roman', '20'), width=35)
 gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'), command=lambda: up_rvld(gss_ent.get(), 0))
 
-letters = tk.Frame(root)
-letters.place(x=500, y=300)
+letters = tk.Frame(root).place(x=500, y=300)
 letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
 letter_buttons = [(tk.Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in s.ascii_lowercase]
 
