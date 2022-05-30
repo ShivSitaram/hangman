@@ -74,7 +74,7 @@ def up_rvld(gss, act):
         if n_rvld == rvld:
             hang_bool = True
             l_rmvd.append(gss)
-        letter_buttons[letter_dict[gss]].config(state='disabled')
+        letter_buttons[letter_dict[gss]]['state'] = 'disabled'
     else:
         if bool(r('[' + s.punctuation + ']', gss)) or gss == '':
             gss_ent.delete(0, 'end')
@@ -158,6 +158,7 @@ p_w_lbl = None
 
 gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
 gss_ent = tk.Entry(root, textvariable=wrd_gss, font=('Times New Roman', '20'), width=35)
+gss_ent.bind('<Return>', lambda: up_rvld(gss_ent.get(), 0))
 gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'), command=lambda: up_rvld(gss_ent.get(), 0))
 
 letters = tk.Frame(root)
@@ -165,8 +166,9 @@ letters.place(x=500, y=300)
 letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
 letter_buttons = [(tk.Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in s.ascii_lowercase]
 
-turtleCa = tk.Canvas(root, width=375, height=900, bg='grey')
+turtleCa = tur.Canvas(root, width=375, height=900)
 turtleCa.place(x=0, y=0)
+screen = tur.TurtleScreen(turtleCa)
 t = tur.RawTurtle(turtleCa)
 t.speed(0)
 t.hideturtle()
