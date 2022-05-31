@@ -14,7 +14,7 @@ def place_nes():
     global p_l_lbl
     global p_w_lbl
     reload_buttons()
-    p_p_lbl.place(x=400, y=0)
+    p_p_lbl.place(relx=.5, rely=.5, anchor='center')
     p_l_lbl.place(x=0, y=900)
     p_w_lbl.place(x=0, y=950)
 
@@ -36,9 +36,10 @@ def place_gss():
 
 def reload_buttons():
     global p_p_lbl
+    global p_p_f
     global p_l_lbl
     global p_w_lbl
-    p_p_lbl = tk.Label(root, text=f'{"".join(["_ " if ch == None else ch + " " for ch in rvld])}', font=('Times New Roman', '48'), anchor='n')
+    p_p_lbl = tk.Label(p_p_f, text=f'{"".join(["_ " if ch == None else ch + " " for ch in rvld])}', font=('Times New Roman', '48'), anchor='n')
     p_l_lbl = tk.Label(root, text=f'Letters Removed: {str(l_rmvd)[1:-1]}', font=('Times New Roman', '25'))
     p_w_lbl = tk.Label(root, text=f'Words Removed: {str(w_rmvd)[1:-1]}', font=('Times New Roman', '25'))
 
@@ -74,14 +75,16 @@ def up_rvld(gss, act):
     global gss_ent
     n_rvld = []
     hang_bool = False
+    gss = gss.lower()
     if act == 1:
         n_rvld = [(gss if wrd[pl] == gss else None) if l == None else l for pl, l in enumerate(rvld)]
         if n_rvld == rvld:
             hang_bool = True
             l_rmvd.append(gss)
         letter_buttons[letter_dict[gss]]['state'] = 'disabled'
-    else:
-        if bool(r('[' + s.punctuation + ']', gss)) or gss == '':
+        rvld = n_rvld
+    elif act == 0:
+        if bool(r('[' + s.punctuation + ']', gss)) or gss == '' or gss in w_gssd:
             gss_ent.delete(0, 'end')
         else:
             if gss == wrd:
@@ -90,8 +93,9 @@ def up_rvld(gss, act):
                 hang_bool = True
                 w_rmvd.append(gss)
                 n_rvld = rvld
+            rvld = n_rvld
+            w_gssd.append(gss)
         gss_ent.delete(0, 'end')
-    rvld = n_rvld
     del_nes()
     place_nes()
     if hang_bool:
@@ -156,6 +160,7 @@ root = tk.Tk()
 
 wrd_gss = tk.StringVar()
 
+p_p_f = tk.Frame(root, width=725, height=300)
 p_p_lbl = None
 p_l_lbl = None
 p_w_lbl = None
@@ -186,8 +191,6 @@ def end():
         btn['state'] = 'disabled'
     gss_bttn['state'] = 'disabled'
     gss_ent['state'] = 'disabled'
-    '''for module in [tur, tk, root, letters, turtleCa]:
-        module.mainloop()'''
 
 def main():
     global gss_ent
@@ -195,9 +198,11 @@ def main():
     global letter_buttons
     global turtleCa
     global t
+    global p_p_f
     global root
     gss_ent.bind('<Return>', lambda event: up_rvld(gss_ent.get(), 0))
     gss_bttn.bind('<Button-1>', lambda event: up_rvld(gss_ent.get(), 0))
+    p_p_f.place(x=375, y=0)
     letters.place(x=500, y=300)
     turtleCa.place(x=0, y=0)
     inst_bttn.place(x=970, y=0)
