@@ -5,9 +5,11 @@ from random import choice as c
 from re import search as r
 
 def start():
+    global message
     place_nes()
     place_gss()
     place_lt_btns()
+    message.config(text='Starting...')
 
 def place_nes():
     global p_p_lbl
@@ -61,10 +63,11 @@ def place_lt_btns():
                 i.grid(row=4, column=3)
 
 def trigger_inst():
+    global message
     popup = tk.Toplevel(root)
     popup.title('Instructions for Hangman')
     instr = tk.Label(popup, text='You can guess either a letter or a word.\nIf you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.\nIf you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.\nIf you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.\nIf you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!', font=('Times New Roman', '20')).pack()
-    return
+    message.config(text='Instructions have been popped out.', fg='black')
 
 def up_rvld(gss, act):
     global up_rvld_response
@@ -73,6 +76,7 @@ def up_rvld(gss, act):
     global wrd
     global rvld
     global gss_ent
+    global message
     n_rvld = []
     hang_bool = False
     gss = gss.lower()
@@ -81,6 +85,9 @@ def up_rvld(gss, act):
         if n_rvld == rvld:
             hang_bool = True
             l_rmvd.append(gss)
+            message.config(text=f'"{gss}" is not in the word.', fg='red')
+        else:
+            message.config(text=f'"{gss}" is in the word.', fg='green')
         letter_buttons[letter_dict[gss]]['state'] = 'disabled'
         rvld = n_rvld
     elif act == 0:
@@ -91,6 +98,7 @@ def up_rvld(gss, act):
                 hang_bool = True
                 w_rmvd.append(gss)
                 n_rvld = rvld
+            message.config(text=f'"{gss}" is not the word.', fg='red')
             rvld = n_rvld
             w_gssd.append(gss)
         gss_ent.delete(0, 'end')
@@ -150,12 +158,10 @@ rvld = [None] * len(wrd)
 prog = 0
 l_rmvd = []
 w_rmvd = []
-l_gssd = []
 w_gssd = []
+print(wrd)
 
 root = tk.Tk()
-
-wrd_gss = tk.StringVar()
 
 p_p_f = tk.Frame(root, width=725, height=300)
 p_p_lbl = None
@@ -163,7 +169,7 @@ p_l_lbl = None
 p_w_lbl = None
 
 gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
-gss_ent = tk.Entry(root, textvariable=wrd_gss, font=('Times New Roman', '20'), width=35)
+gss_ent = tk.Entry(root, font=('Times New Roman', '20'), width=35)
 gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'))
 
 inst_bttn = tk.Button(root, text='Instructions', font=('Times New Roman', '20'), command=trigger_inst)
@@ -176,14 +182,17 @@ turtleCa = tur.Canvas(root, width=375, height=900)
 screen = tur.TurtleScreen(turtleCa)
 t = tur.RawTurtle(turtleCa)
 
+message = tk.Label(root, text='', font=('Times New Roman', '40'))
+
 def end():
     global letter_buttons
     global gss_bttn
     global gss_ent
+    global message
     if prog >= 8:
-        tk.Label(root, text='You lost! The word was ' + wrd + '.', fg='red', font=('Times New Roman', '40')).place(x=400, y=750)
+        message.config(text='You lost! The word was ' + wrd + '.', fg='red')
     elif rvld.count(None) == 0:
-        tk.Label(root, text='You won!', fg='green', font=('Times New Roman', '40')).place(x=400, y=750)
+        message.config(text='You won!', fg='green')
     for btn in letter_buttons:
         btn['state'] = 'disabled'
     gss_bttn['state'] = 'disabled'
@@ -197,6 +206,7 @@ def main():
     global t
     global p_p_f
     global root
+    global message
     gss_ent.bind('<Return>', lambda event: up_rvld(gss_ent.get(), 0))
     gss_bttn.bind('<Button-1>', lambda event: up_rvld(gss_ent.get(), 0))
     p_p_f.place(x=375, y=0)
@@ -205,6 +215,7 @@ def main():
     inst_bttn.place(x=970, y=0)
     t.speed(0)
     t.hideturtle()
+    message.place(x=400, y=750)
     root.title('Hangman')
     root.geometry("1100x1000+10+10")
     start()
