@@ -59,6 +59,12 @@ def place_lt_btns():
             elif num == 25:
                 i.grid(row=4, column=3)
 
+def trigger_inst():
+    popup = tk.Toplevel(root)
+    popup.title('Instructions for Hangman')
+    instr = tk.Label(popup, text='You can guess either a letter or a word.\nIf you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.\nIf you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.\nIf you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.\nIf you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!', font=('Times New Roman', '20')).pack()
+    return
+
 def up_rvld(gss, act):
     global up_rvld_response
     global letter_buttons
@@ -144,6 +150,7 @@ l_rmvd = []
 w_rmvd = []
 l_gssd = []
 w_gssd = []
+print(wrd)
 
 root = tk.Tk()
 
@@ -156,6 +163,8 @@ p_w_lbl = None
 gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
 gss_ent = tk.Entry(root, textvariable=wrd_gss, font=('Times New Roman', '20'), width=35)
 gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'))
+
+inst_bttn = tk.Button(root, text='Instructions', font=('Times New Roman', '20'), command=trigger_inst)
 
 letters = tk.Frame(root)
 letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
@@ -191,6 +200,7 @@ def main():
     gss_bttn.bind('<Button-1>', lambda event: up_rvld(gss_ent.get(), 0))
     letters.place(x=500, y=300)
     turtleCa.place(x=0, y=0)
+    inst_bttn.place(x=970, y=0)
     t.speed(0)
     t.hideturtle()
     root.title('Hangman')
