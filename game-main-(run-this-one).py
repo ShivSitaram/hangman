@@ -44,7 +44,6 @@ def reload_buttons():
 
 def place_lt_btns():
     global letter_buttons
-    #letter_buttons[0].grid(row=0, column=0)
     columnnum = 0
     rownum = 0
     for num, i in enumerate(letter_buttons):
@@ -147,8 +146,6 @@ l_gssd = []
 w_gssd = []
 
 root = tk.Tk()
-root.title('Hangman')
-root.geometry("1100x1000+10+10")
 
 wrd_gss = tk.StringVar()
 
@@ -158,22 +155,15 @@ p_w_lbl = None
 
 gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
 gss_ent = tk.Entry(root, textvariable=wrd_gss, font=('Times New Roman', '20'), width=35)
-gss_ent.bind('<Return>', lambda: up_rvld(gss_ent.get(), 0))
-gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'), command=lambda: up_rvld(gss_ent.get(), 0))
+gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'))
 
 letters = tk.Frame(root)
-letters.place(x=500, y=300)
 letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
 letter_buttons = [(tk.Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in s.ascii_lowercase]
 
 turtleCa = tur.Canvas(root, width=375, height=900)
-turtleCa.place(x=0, y=0)
 screen = tur.TurtleScreen(turtleCa)
 t = tur.RawTurtle(turtleCa)
-t.speed(0)
-t.hideturtle()
-
-start()
 
 def end():
     global letter_buttons
@@ -187,5 +177,27 @@ def end():
         btn['state'] = 'disabled'
     gss_bttn['state'] = 'disabled'
     gss_ent['state'] = 'disabled'
-for module in [tur, tk, root, letters, turtleCa]:
-    module.mainloop()
+    '''for module in [tur, tk, root, letters, turtleCa]:
+        module.mainloop()'''
+
+def main():
+    global gss_ent
+    global gss_bttn
+    global letter_buttons
+    global turtleCa
+    global t
+    global root
+    gss_ent.bind('<Return>', lambda event: up_rvld(gss_ent.get(), 0))
+    gss_bttn.bind('<Button-1>', lambda event: up_rvld(gss_ent.get(), 0))
+    letters.place(x=500, y=300)
+    turtleCa.place(x=0, y=0)
+    t.speed(0)
+    t.hideturtle()
+    root.title('Hangman')
+    root.geometry("1100x1000+10+10")
+    start()
+
+    tk.mainloop()
+
+if __name__ == '__main__':
+    main()
