@@ -181,7 +181,7 @@ turtleCa = tur.Canvas(root, width=375, height=900)
 screen = tur.TurtleScreen(turtleCa)
 t = tur.RawTurtle(turtleCa)
 
-message = tk.Label(root, text='', font=('Times New Roman', '40'))
+message = tk.Label(root, font=('Times New Roman', '40'))
 
 def end():
     global letter_buttons
