@@ -84,9 +84,7 @@ def up_rvld(gss, act):
         letter_buttons[letter_dict[gss]]['state'] = 'disabled'
         rvld = n_rvld
     elif act == 0:
-        if bool(r('[' + s.punctuation + ']', gss)) or gss == '' or gss in w_gssd:
-            gss_ent.delete(0, 'end')
-        else:
+        if not (bool(r('[' + s.punctuation + ']', gss)) or gss == '' or gss in w_gssd):
             if gss == wrd:
                 n_rvld = [l for l in wrd]
             else:
