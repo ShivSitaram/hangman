@@ -152,7 +152,6 @@ l_rmvd = []
 w_rmvd = []
 l_gssd = []
 w_gssd = []
-print(wrd)
 
 root = tk.Tk()
 
