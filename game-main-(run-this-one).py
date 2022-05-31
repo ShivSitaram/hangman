@@ -159,7 +159,6 @@ prog = 0
 l_rmvd = []
 w_rmvd = []
 w_gssd = []
-print(wrd)
 
 root = tk.Tk()
 
@@ -190,7 +189,7 @@ def end():
     global gss_ent
     global message
     if prog >= 8:
-        message.config(text='You lost! The word was ' + wrd + '.', fg='red')
+        message.config(text=f'You lost! The word was {wrd}.', fg='red')
     elif rvld.count(None) == 0:
         message.config(text='You won!', fg='green')
     for btn in letter_buttons:
