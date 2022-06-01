@@ -66,7 +66,7 @@ def trigger_inst():
     global message
     popup = tk.Toplevel(root)
     popup.title('Instructions for Hangman')
-    instr = tk.Label(popup, text='You can guess either a letter or a word.\nIf you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.\nIf you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.\nIf you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.\nIf you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!', font=('Times New Roman', '20')).pack()
+    tk.Label(popup, text='You can guess either a letter or a word.\nIf you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.\nIf you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.\nIf you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.\nIf you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!', font=('Times New Roman', '20')).pack()
     message.config(text='Instructions have been popped out.', fg='black')
 
 def up_rvld(gss, act):
