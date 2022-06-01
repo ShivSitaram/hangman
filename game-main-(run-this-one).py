@@ -17,8 +17,8 @@ def place_nes():
     global p_w_lbl
     reload_buttons()
     p_p_lbl.place(relx=.5, rely=.5, anchor='center')
-    p_l_lbl.place(x=0, y=900)
-    p_w_lbl.place(x=0, y=950)
+    p_l_lbl.place(x=0, y=650)
+    p_w_lbl.place(x=0, y=700)
 
 def del_nes():
     global p_p_lbl
@@ -32,9 +32,9 @@ def place_gss():
     global gss_lbl
     global gss_ent
     global gss_bttn
-    gss_bttn.place(x=975, y=850)
-    gss_lbl.place(x=400, y=850)
-    gss_ent.place(x=600, y=850)
+    gss_bttn.place(x=875, y=650)
+    gss_lbl.place(x=400, y=600)
+    gss_ent.place(x=600, y=600)
 
 def reload_buttons():
     global p_p_lbl
@@ -159,10 +159,11 @@ prog = 0
 l_rmvd = []
 w_rmvd = []
 w_gssd = []
+#print(wrd)
 
 root = tk.Tk()
 
-p_p_f = tk.Frame(root, width=725, height=300)
+p_p_f = tk.Frame(root, width=625, height=100)
 p_p_lbl = None
 p_l_lbl = None
 p_w_lbl = None
@@ -177,7 +178,7 @@ letters = tk.Frame(root)
 letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
 letter_buttons = [(tk.Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in s.ascii_lowercase]
 
-turtleCa = tur.Canvas(root, width=375, height=900)
+turtleCa = tur.Canvas(root, width=375, height=650)
 screen = tur.TurtleScreen(turtleCa)
 t = tur.RawTurtle(turtleCa)
 
@@ -200,6 +201,7 @@ def end():
 def main():
     global gss_ent
     global gss_bttn
+    global inst_bttn
     global letter_buttons
     global turtleCa
     global t
@@ -209,14 +211,15 @@ def main():
     gss_ent.bind('<Return>', lambda event: up_rvld(gss_ent.get(), 0))
     gss_bttn.bind('<Button-1>', lambda event: up_rvld(gss_ent.get(), 0))
     p_p_f.place(x=375, y=0)
-    letters.place(x=500, y=300)
+    letters.place(x=400, y=100)
     turtleCa.place(x=0, y=0)
-    inst_bttn.place(x=970, y=0)
+    inst_bttn.place(x=865, y=0)
     t.speed(0)
     t.hideturtle()
-    message.place(x=400, y=750)
+    message.place(x=400, y=500)
     root.title('Hangman')
-    root.geometry("1100x1000+10+10")
+    root.geometry("1000x750+10+10")
+    root.resizable(False, False)
     start()
 
     tk.mainloop()
