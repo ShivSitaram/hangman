@@ -1,8 +1,8 @@
-import tkinter as tk
-import turtle as tur
-import string as s
-from random import choice as c
-from re import search as r
+from tkinter import Label, Toplevel, Tk, Frame, Entry, Button, mainloop
+from turtle import Canvas, TurtleScreen, RawTurtle
+from string import ascii_lowercase, punctuation
+from random import choice
+from re import search
 
 def start():
     global message
@@ -41,9 +41,9 @@ def reload_buttons():
     global p_p_f
     global p_l_lbl
     global p_w_lbl
-    p_p_lbl = tk.Label(p_p_f, text=f'{"".join(["_ " if ch == None else ch + " " for ch in rvld])}', font=('Times New Roman', '48'), anchor='n')
-    p_l_lbl = tk.Label(root, text=f'Letters Removed: {str(l_rmvd)[1:-1]}', font=('Times New Roman', '25'))
-    p_w_lbl = tk.Label(root, text=f'Words Removed: {str(w_rmvd)[1:-1]}', font=('Times New Roman', '25'))
+    p_p_lbl = Label(p_p_f, text=f'{"".join(["_ " if ch == None else ch + " " for ch in rvld])}', font=('Times New Roman', '48'), anchor='n')
+    p_l_lbl = Label(root, text=f'Letters Removed: {str(l_rmvd)[1:-1]}', font=('Times New Roman', '25'))
+    p_w_lbl = Label(root, text=f'Words Removed: {str(w_rmvd)[1:-1]}', font=('Times New Roman', '25'))
 
 def place_lt_btns():
     global letter_buttons
@@ -64,9 +64,15 @@ def place_lt_btns():
 
 def trigger_inst():
     global message
-    popup = tk.Toplevel(root)
+    popup = Toplevel(root)
     popup.title('Instructions for Hangman')
-    tk.Label(popup, text='You can guess either a letter or a word.\nIf you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.\nIf you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.\nIf you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.\nIf you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!', font=('Times New Roman', '20')).pack()
+    instr = Label(popup, text='''
+You can guess either a letter or a word.
+If you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.
+If you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.
+If you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.
+If you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!
+                                ''', font=('Times New Roman', '20')).pack()
     message.config(text='Instructions have been popped out.', fg='black')
 
 def up_rvld(gss, act):
@@ -91,7 +97,7 @@ def up_rvld(gss, act):
         letter_buttons[letter_dict[gss]]['state'] = 'disabled'
         rvld = n_rvld
     elif act == 0:
-        if not (bool(r('[' + s.punctuation + ']', gss)) or gss == '' or gss in w_gssd):
+        if not (bool(search('[' + punctuation + ']', gss)) or gss == '' or gss in w_gssd):
             if gss == wrd:
                 n_rvld = [l for l in wrd]
             else:
@@ -149,10 +155,10 @@ def hang():
     prog = prog + 1
 
 with open('all words.txt', 'r') as f:
-    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r('[' + s.punctuation + ']', word))]
+    ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(search('[' + punctuation + ']', word)) and 2 <= len(word) <= 17]
 
-wrd = c(ws)
-#wrd = 'ENTER WORD HERE'
+wrd = choice(ws)
+#wrd = 'ENTER YOUR WORD HERE' #choose a word that has a lenth greater than 2 and less than 17
 rvld = [None] * len(wrd)
 #{0: L, 1: head, 2: neck, 3: arm, 4: arm 2, 5: body, 6: leg, 7: second leg}
 prog = 0
@@ -161,28 +167,28 @@ w_rmvd = []
 w_gssd = []
 #print(wrd)
 
-root = tk.Tk()
+root = Tk()
 
-p_p_f = tk.Frame(root, width=625, height=100)
+p_p_f = Frame(root, width=625, height=100)
 p_p_lbl = None
 p_l_lbl = None
 p_w_lbl = None
 
-gss_lbl = tk.Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
-gss_ent = tk.Entry(root, font=('Times New Roman', '20'), width=35)
-gss_bttn = tk.Button(root, text='Guess!', font=('Times New Roman', '20'))
+gss_lbl = Label(root, text='Enter your word guess: ', font=('Times New Roman', '20'))
+gss_ent = Entry(root, font=('Times New Roman', '20'), width=35)
+gss_bttn = Button(root, text='Guess!', font=('Times New Roman', '20'))
 
-inst_bttn = tk.Button(root, text='Instructions', font=('Times New Roman', '20'), command=trigger_inst)
+inst_bttn = Button(root, text='Instructions', font=('Times New Roman', '20'), command=trigger_inst)
 
-letters = tk.Frame(root)
-letter_dict = {l:n for n, l in enumerate(s.ascii_lowercase)}
-letter_buttons = [(tk.Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in s.ascii_lowercase]
+letters = Frame(root)
+letter_dict = {l:n for n, l in enumerate(ascii_lowercase)}
+letter_buttons = [(Button(letters, text=(l.upper()), padx=20, pady=20, font=('Times New Roman', '25'), state='normal', command=lambda l=l: up_rvld(l, 1))) for l in ascii_lowercase]
 
-turtleCa = tur.Canvas(root, width=375, height=650)
-screen = tur.TurtleScreen(turtleCa)
-t = tur.RawTurtle(turtleCa)
+turtleCa = Canvas(root, width=375, height=650)
+screen = TurtleScreen(turtleCa)
+t = RawTurtle(turtleCa)
 
-message = tk.Label(root, font=('Times New Roman', '40'))
+message = Label(root, font=('Times New Roman', '40'))
 
 def end():
     global letter_buttons
@@ -222,7 +228,7 @@ def main():
     root.resizable(False, False)
     start()
 
-    tk.mainloop()
+    mainloop()
 
 if __name__ == '__main__':
     main()
