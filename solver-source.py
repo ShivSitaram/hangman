@@ -18,12 +18,14 @@ def best_gss(phrase, avail):
     return freq
 
 def main():
-    phrase = None
+    phrase = '#'
     letters_rem_list = []
     while phrase != '':
+        old = phrase
         phrase = input("Revealed: (use a '_' or '?' for unknown) ").lower()
-        letters_rem = input("Letters removed: (enter if none this turn) ")
-        letters_rem_list.append(letters_rem)
+        if ['?' if ch == '' or ch == '?' else ch for ch in phrase] == ['?' if ch == '' or ch == '?' else ch for ch in old]:
+            letters_rem = input("Letters removed: (enter if none this turn) ")
+            letters_rem_list.append(letters_rem)
         freq = best_gss(phrase, avail_words(phrase))
         for l in sorted(freq, key=freq.get, reverse=True):
             if l not in phrase:
