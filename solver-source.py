@@ -23,7 +23,7 @@ def main():
     while phrase != '':
         old = phrase
         phrase = input("Revealed: (use a '_' or '?' for unknown) ").lower()
-        if ['?' if ch == '' or ch == '?' else ch for ch in phrase] == ['?' if ch == '' or ch == '?' else ch for ch in old]:
+        if ['?' if ch == '_' or ch == '?' else ch for ch in phrase] == ['?' if ch == '_' or ch == '?' else ch for ch in old]:
             letters_rem = input("Letters removed: (enter if none this turn) ")
             letters_rem_list.append(letters_rem)
         freq = best_gss(phrase, avail_words(phrase))
