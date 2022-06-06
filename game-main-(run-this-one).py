@@ -90,7 +90,7 @@ class App:
     def trigger_inst(self):
         popup = Toplevel(self.root)
         popup.title('Instructions for Hangman')
-        instr = Label(popup, text='''
+        Label(popup, text='''
 You can guess either a letter or a word.
 If you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.
 If you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.
