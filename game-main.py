@@ -3,11 +3,15 @@ import turtle as tur
 import string as s
 import random as ra
 import re as r
+import os as o
 
 class App:
 
-    def __init__(self, word):
-        with open('all words.txt', 'r') as f:
+    def __init__(self, word, wordfilename):
+        if not o.path.exists(wordfilename):
+            print(f'You don\'t have the file \'{wordfilename}\' installed or in the same folder this python program is in. Please install it before running. This program will automatically quit.')
+            exit()
+        with open(wordfilename, 'r') as f:
             ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word)) and 2 <= len(word) <= 17]
         
         self.wrd = ra.choice(ws)
@@ -196,7 +200,7 @@ If you are able to reveal all the places of the word or guess it before the hang
 
         tk.mainloop()
 
-hangman_app = App('')
+hangman_app = App('', 'all words.txt')
 
 if __name__ == '__main__':
     hangman_app.main()
