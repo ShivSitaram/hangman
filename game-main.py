@@ -200,7 +200,7 @@ If you are able to reveal all the places of the word or guess it before the hang
 
         tk.mainloop()
 
-hangman_app = App('', 'all words.txt')
+hangman_app = App('', 'wordlist.txt')
 
 if __name__ == '__main__':
     hangman_app.main()
