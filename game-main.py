@@ -1,3 +1,15 @@
+'''
+USER CUSTOMIZATIONS
+===================
+'''
+TARGET_WORD = '' #fill the quotes if you'd like a customized target word; otherwise, leave it blank, a random word would be chosen from the file below
+
+WORD_FILE_NAME = 'wordlist.txt' #if you left TARGET_WORD with blank quotes, please fill this out with a file name that has a list of words seperated with newlines; a random word will be chosen from those words.
+'''
+===================
+USER CUSTOMIZATIONS
+'''
+
 import tkinter as tk
 import turtle as tur
 import string as s
@@ -11,18 +23,18 @@ class App:
         if not o.path.exists(wordfilename):
             print(f'You don\'t have the file \'{wordfilename}\' installed or in the same folder this python program is in. Please install it before running. This program will automatically quit.')
             exit()
+
         with open(wordfilename, 'r') as f:
-            ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word)) and 2 <= len(word) <= 17]
-        
-        self.wrd = ra.choice(ws)
+            self.ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r.search('[' + s.punctuation + ']', word)) and 2 <= len(word) <= 17]
+
+        self.res_nes()
+
+        self.mode = 1
         if word != '':
+            self.mode = 0
             self.wrd = word
 
-        self.rvld = [None] * len(self.wrd)
-        self.prog = 0
-        self.l_rmvd = []
-        self.w_rmvd = []
-        self.w_gssd = []
+        self.score = 0
 
         self.root = tk.Tk()
 
@@ -34,6 +46,9 @@ class App:
         self.gss_lbl = tk.Label(self.root, text='Enter your word guess: ', font=('Times New Roman', '20'))
         self.gss_ent = tk.Entry(self.root, font=('Times New Roman', '20'), width=35)
         self.gss_bttn = tk.Button(self.root, text='Guess!', font=('Times New Roman', '20'))
+        
+        self.session_lbl = tk.Label(self.root, text=f'Session Score: {self.score}', font=('Times New Roman', '20'))
+        self.play_ag_bttn = tk.Button(self.root, text='Play Again', font=('Times New Roman', '20'), command=self.reset)
 
         self.inst_bttn = tk.Button(self.root, text='Instructions', font=('Times New Roman', '20'), command=self.trigger_inst)
 
@@ -47,12 +62,22 @@ class App:
 
         self.message = tk.Label(self.root, font=('Times New Roman', '40'))
 
+    def res_nes(self):
+        self.wrd = ra.choice(self.ws)
+        self.rvld = [None] * len(self.wrd)
+        self.prog = 0
+        self.l_rmvd = []
+        self.w_rmvd = []
+        self.w_gssd = []
+
+        print(self.wrd)
+
 
     def start(self):
         self.place_nes()
         self.place_gss()
         self.place_lt_btns()
-        self.message.config(text='Starting...')
+        self.message.config(text='Starting...', fg='black')
 
     def place_nes(self):
         self.reload_buttons()
@@ -90,6 +115,30 @@ class App:
                     i.grid(row=4, column=2)
                 elif num == 25:
                     i.grid(row=4, column=3)
+
+    def reset(self):
+        self.res_nes()
+
+        for btn in self.letter_buttons:
+            btn['state'] = 'normal'
+        self.gss_bttn['state'] = 'normal'
+        self.gss_ent['state'] = 'normal'
+
+        self.message.config(text='Starting...', fg='black')
+
+        self.del_nes()
+        self.place_nes()
+
+        self.turtleCa.destroy()
+        self.turtleCa = tur.Canvas(self.root, width=375, height=650)
+        self.turtleCa.place(x=0, y=0)
+        self.screen = tur.TurtleScreen(self.turtleCa)
+        self.t = tur.RawTurtle(self.turtleCa)
+        self.t.speed(0)
+        self.t.hideturtle()
+
+        self.play_ag_bttn.destroy()
+        self.play_ag_bttn = tk.Button(self.root, text='Play Again', font=('Times New Roman', '20'), command=self.reset)
 
     def trigger_inst(self):
         popup = tk.Toplevel(self.root)
@@ -175,13 +224,21 @@ If you are able to reveal all the places of the word or guess it before the hang
 
     def end(self):
         if self.prog >= 8:
+            self.score -= 1
             self.message.config(text=f'You lost! The word was {self.wrd}.', fg='red')
         elif self.rvld.count(None) == 0:
+            self.score += 1
             self.message.config(text='You won!', fg='green')
+
+        self.session_lbl.config(text=f'Session Score: {self.score}')
+        
         for btn in self.letter_buttons:
             btn['state'] = 'disabled'
         self.gss_bttn['state'] = 'disabled'
         self.gss_ent['state'] = 'disabled'
+        if self.mode == 1:
+            self.play_ag_bttn.place(x=720, y=0)
+        
 
     def main(self):
         self.gss_ent.bind('<Return>', lambda event: self.up_rvld(self.gss_ent.get(), 0))
@@ -189,6 +246,7 @@ If you are able to reveal all the places of the word or guess it before the hang
         self.p_p_f.place(x=375, y=0)
         self.letters.place(x=400, y=100)
         self.turtleCa.place(x=0, y=0)
+        self.session_lbl.place(x=400, y=0)
         self.inst_bttn.place(x=865, y=0)
         self.t.speed(0)
         self.t.hideturtle()
@@ -200,7 +258,7 @@ If you are able to reveal all the places of the word or guess it before the hang
 
         tk.mainloop()
 
-hangman_app = App('', 'wordlist.txt')
+hangman_app = App(TARGET_WORD, WORD_FILE_NAME)
 
 if __name__ == '__main__':
     hangman_app.main()
