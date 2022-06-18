@@ -39,9 +39,9 @@ class App:
         self.root = tk.Tk()
 
         self.p_p_f = tk.Frame(self.root, width=625, height=100)
-        self.p_p_lbl = None
-        self.p_l_lbl = None
-        self.p_w_lbl = None
+        self.p_p_lbl = tk.Label(self.p_p_f, text=f'{"".join(["_ " if ch == None else ch + " " for ch in self.rvld])}', font=('Times New Roman', '48'))
+        self.p_l_lbl = tk.Label(self.root, text=f'Letters Removed: {str(self.l_rmvd)[1:-1]}', font=('Times New Roman', '25'))
+        self.p_w_lbl = tk.Label(self.root, text=f'Words Removed: {str(self.w_rmvd)[1:-1]}', font=('Times New Roman', '25'))
 
         self.gss_lbl = tk.Label(self.root, text='Enter your word guess: ', font=('Times New Roman', '20'))
         self.gss_ent = tk.Entry(self.root, font=('Times New Roman', '20'), width=35)
@@ -70,37 +70,14 @@ class App:
         self.w_rmvd = []
         self.w_gssd = []
 
-        print(self.wrd)
+        #print(self.wrd)
 
 
     def start(self):
-        self.place_nes()
-        self.place_gss()
-        self.place_lt_btns()
-        self.message.config(text='Starting...', fg='black')
-
-    def place_nes(self):
-        self.reload_buttons()
-        self.p_p_lbl.place(relx=.5, rely=.5, anchor='center')
-        self.p_l_lbl.place(x=0, y=650)
-        self.p_w_lbl.place(x=0, y=700)
-
-    def del_nes(self):
-        self.p_p_lbl.destroy()
-        self.p_l_lbl.destroy()
-        self.p_w_lbl.destroy()
-
-    def place_gss(self):
         self.gss_bttn.place(x=875, y=650)
         self.gss_lbl.place(x=400, y=600)
         self.gss_ent.place(x=600, y=600)
 
-    def reload_buttons(self):
-        self.p_p_lbl = tk.Label(self.p_p_f, text=f'{"".join(["_ " if ch == None else ch + " " for ch in self.rvld])}', font=('Times New Roman', '48'), anchor='n')
-        self.p_l_lbl = tk.Label(self.root, text=f'Letters Removed: {str(self.l_rmvd)[1:-1]}', font=('Times New Roman', '25'))
-        self.p_w_lbl = tk.Label(self.root, text=f'Words Removed: {str(self.w_rmvd)[1:-1]}', font=('Times New Roman', '25'))
-
-    def place_lt_btns(self):
         columnnum = 0
         rownum = 0
         for num, i in enumerate(self.letter_buttons):
@@ -115,6 +92,13 @@ class App:
                     i.grid(row=4, column=2)
                 elif num == 25:
                     i.grid(row=4, column=3)
+        
+        self.message.config(text='Starting...', fg='black')
+
+    def reload_buttons(self):
+        self.p_p_lbl.config(text=f'{"".join(["_ " if ch == None else ch + " " for ch in self.rvld])}')
+        self.p_l_lbl.config(text=f'Letters Removed: {str(self.l_rmvd)[1:-1]}')
+        self.p_w_lbl.config(text=f'Words Removed: {str(self.w_rmvd)[1:-1]}')
 
     def reset(self):
         self.res_nes()
@@ -126,8 +110,7 @@ class App:
 
         self.message.config(text='Starting...', fg='black')
 
-        self.del_nes()
-        self.place_nes()
+        self.reload_buttons()
 
         self.turtleCa.destroy()
         self.turtleCa = tur.Canvas(self.root, width=375, height=650)
@@ -178,8 +161,7 @@ If you are able to reveal all the places of the word or guess it before the hang
                 self.rvld = n_rvld
                 self.w_gssd.append(gss)
             self.gss_ent.delete(0, 'end')
-        self.del_nes()
-        self.place_nes()
+        self.reload_buttons()
         if hang_bool:
             self.hang()
         if self.prog >=8 or self.rvld.count(None) == 0:
@@ -236,6 +218,7 @@ If you are able to reveal all the places of the word or guess it before the hang
             btn['state'] = 'disabled'
         self.gss_bttn['state'] = 'disabled'
         self.gss_ent['state'] = 'disabled'
+
         if self.mode == 1:
             self.play_ag_bttn.place(x=720, y=0)
         
@@ -244,6 +227,9 @@ If you are able to reveal all the places of the word or guess it before the hang
         self.gss_ent.bind('<Return>', lambda event: self.up_rvld(self.gss_ent.get(), 0))
         self.gss_bttn.bind('<Button-1>', lambda event: self.up_rvld(self.gss_ent.get(), 0))
         self.p_p_f.place(x=375, y=0)
+        self.p_p_lbl.place(relx=.5, rely=.5, anchor='center')
+        self.p_l_lbl.place(x=0, y=650)
+        self.p_w_lbl.place(x=0, y=700)
         self.letters.place(x=400, y=100)
         self.turtleCa.place(x=0, y=0)
         self.session_lbl.place(x=400, y=0)
