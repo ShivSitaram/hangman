@@ -3,7 +3,7 @@ import turtle as tur
 import string as s
 from re import search as r
 
-with open('all words.txt', 'r') as f:
+with open('wordlists/wordlist.txt', 'r') as f:
     ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(r('[' + s.punctuation + ']', word)) and len(word) >= 2]
 
 wrd = c(ws)
