@@ -4,7 +4,7 @@ USER CUSTOMIZATIONS
 '''
 TARGET_WORD = '' #fill the quotes if you'd like a customized target word; otherwise, leave it blank, a random word would be chosen from the file below
 
-WORD_FILE_NAME = 'wordlist.txt' #if you left TARGET_WORD with blank quotes, please fill this out with a file name that has a list of words seperated with newlines; a random word will be chosen from those words.
+WORD_FILE_NAME = 'wordlists/wordlist.txt' #if you left TARGET_WORD with blank quotes, please fill this out with a file name that has a list of words seperated with newlines; a random word will be chosen from those words.
 '''
 ===================
 USER CUSTOMIZATIONS
