@@ -2,7 +2,7 @@ from string import ascii_lowercase, punctuation, digits
 from re import search
 
 def avail_words(phrase):
-    with open('all words.txt', 'r') as f:
+    with open('wordlists/wordlist.txt', 'r') as f:
         ws = [word.rstrip('\n').lower() for word in f.readlines() if not bool(search('[' + punctuation + digits + ']', word)) and len(word) == len(phrase) + 1]
     for n, l in enumerate(phrase):
         if l != '_' and l != '?':
