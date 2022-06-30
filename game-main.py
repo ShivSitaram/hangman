@@ -130,7 +130,8 @@ class App:
 You can guess either a letter or a word.
 If you guess a letter and that letter is in the word, then the computer will reveal the places as to where it is in the word.
 If you guess a letter and that letter is not in the word, then the computer will draw a man being hanged.
-If you guess a word that is correct, you win!\nIf you guess a word that is not correct, the hangman gets hanged.
+If you guess a word that is correct, you win!
+If you guess a word that is not correct, the hangman gets hanged.
 If you are able to reveal all the places of the word or guess it before the hangman is hanged, you win!
                                 ''', font=('Times New Roman', '20')).pack()
         self.message.config(text='Instructions have been popped out.', fg='black')
